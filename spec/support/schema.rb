@@ -53,6 +53,7 @@ module Schema
           t.integer  :parent_id
           t.string   :name
           t.integer  :salary
+          t.boolean  :is_cool
           t.timestamps
         end
 
