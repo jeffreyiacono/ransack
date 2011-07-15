@@ -34,29 +34,5 @@ module Ransack
         @s.result.to_sql.should match /"people"."name" IS NOT NULL/
       end
     end
-
-    describe 'matches' do
-      it "generates a value LIKE 't' when true" do
-        @s.is_cool_matches = true
-        @s.result.to_sql.should match /"people"."is_cool" LIKE 't'/
-      end
-
-      it "generates a value LIKE 'f' when false" do
-        @s.is_cool_matches = false
-        @s.result.to_sql.should match /"people"."is_cool" LIKE 'f'/
-      end
-    end
-
-    describe 'blank' do
-      it "generates a value IS NULL OR ='' when true" do
-        @s.name_blank = true
-        @s.result.to_sql.should match /"people"."name" IS NULL OR "people"."name" = ''/
-      end
-
-      it "generates a value IS NOT NULL OR !='' when false" do
-        @s.name_blank = false
-        @s.result.to_sql.should match /"people"."name" IS NOT NULL OR "people"."name" != ''/
-      end
-    end
   end
 end
