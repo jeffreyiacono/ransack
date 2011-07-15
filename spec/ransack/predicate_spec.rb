@@ -34,5 +34,17 @@ module Ransack
         @s.result.to_sql.should match /"people"."name" IS NOT NULL/
       end
     end
+
+    describe 'eq' do
+      it "generates a value = 't' when true" do
+        @s.is_cool_eq = true
+        @s.result.to_sql.should match /"people"."is_cool" = 't'/
+      end
+
+      it "generates a value = 'f' when false" do
+        @s.is_cool_eq = false
+        @s.result.to_sql.should match /"people"."is_cool" = 'f'/
+      end
+    end
   end
 end
