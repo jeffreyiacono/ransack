@@ -35,6 +35,20 @@ module Ransack
       end
     end
 
+    describe 'true' do
+      it "generates a value = 't' when true" do
+        @s.is_cool_true = true
+        @s.result.to_sql.should match /"people"."is_cool" = 't'/
+      end
+    end
+
+    describe 'false' do
+      it "generates a value = 'f' when true" do
+        @s.is_cool_false = true
+        @s.result.to_sql.should match /"people"."is_cool" = 'f'/
+      end
+    end
+
     describe 'eq' do
       it "generates a value = 't' when true" do
         @s.is_cool_eq = true
@@ -44,30 +58,6 @@ module Ransack
       it "generates a value = 'f' when false" do
         @s.is_cool_eq = false
         @s.result.to_sql.should match /"people"."is_cool" = 'f'/
-      end
-    end
-
-    describe 'true' do
-      it "generates a value = 't' when true" do
-        @s.is_cool_true = true
-        @s.result.to_sql.should match /"people"."is_cool" = 't'/
-      end
-
-      it "generates a value = 'f' when false" do
-        @s.is_cool_true = false
-        @s.result.to_sql.should match /"people"."is_cool" = 'f'/
-      end
-    end
-
-    describe 'false' do
-      it "generates a value = 'f' when true" do
-        @s.is_cool_false = true
-        @s.result.to_sql.should match /"people"."is_cool" = 'f'/
-      end
-
-      it "generates a value = 't' when false" do
-        @s.is_cool_false = false
-        @s.result.to_sql.should match /"people"."is_cool" = 't'/
       end
     end
   end
