@@ -126,7 +126,12 @@ module Ransack
         )
         search.result.should be_an ActiveRecord::Relation
         where = search.result.where_values.first
-        where.to_sql.should match /\("people"."name" = 'Ernie' OR "children_people"."name" = 'Ernie'\) AND \("people"."name" = 'Bert' OR "children_people"."name" = 'Bert'\)/
+        sql = where.to_sql
+        first, second = sql.split(/ AND /)
+        first.should match /"people"."name" = 'Ernie'/
+        first.should match /"children_people"."name" = 'Ernie'/
+        second.should match /"people"."name" = 'Bert'/
+        second.should match /"children_people"."name" = 'Bert'/
       end
 
       it 'returns distinct records when passed :distinct => true' do
@@ -175,13 +180,11 @@ module Ransack
           }
         }
         @s.sorts.should have(2).items
-        sort1, sort2 = @s.sorts
-        sort1.should be_a Nodes::Sort
-        sort1.name.should eq 'id'
-        sort1.dir.should eq 'desc'
-        sort2.should be_a Nodes::Sort
-        sort2.name.should eq 'name'
-        sort2.dir.should eq 'asc'
+        @s.sorts.should be_all {|s| Nodes::Sort === s}
+        id_sort = @s.sorts.detect {|s| s.name == 'id'}
+        name_sort = @s.sorts.detect {|s| s.name == 'name'}
+        id_sort.dir.should eq 'desc'
+        name_sort.dir.should eq 'asc'
       end
     end
 
